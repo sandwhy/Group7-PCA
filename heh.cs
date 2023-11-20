@@ -15,20 +15,6 @@ void Menu(){
   lcd.display();
 }
 
-void Menu(){
-  // setup variables
-  int stat = 1;
-  // setup lcd screen
-  lcd.clear();
-  lcd.print("Ready to play?");
-  lcd.cursor();
-  lcd.setCursor(0,1);
-  lcd.print("y/n");
-  // 
-  
-
-}
-
 void setup()
 {
   Serial.begin(9600);
@@ -42,16 +28,52 @@ void setup()
   }
 
   lcd.begin(16,2);
-  lcd.print("Play game?");
 }
 
+int gameOn = 0;
+int menuOn = 0;
+int roundOn = 0;
+int endMenuOn = 0;
+// menu i need a system that keeps a static screen. updates when theres an input. then moves on to the next function. Within a system that continuously loops itself
 void loop()
 {
-  for (int b=0; b<6; b++){
-    if (digitalRead(buttons[b]) == 1){
-      lcd.setCursor(0,1);
-      lcd.print("b: ");
-      lcd.print(b);
+  while (gameOn == 1){
+    for (int b=0; b<6; b++){
+      if (digitalRead(buttons[0]) == 1){
+        
+      }
+      // if (digitalRead(buttons[b]) == 1){
+      //   if(menuOn == 1){
+      //     lcd.clear();
+      //     lcd.print("Play Game?");
+      //   }
+
+      //   lcd.setCursor(0,1);
+      //   lcd.print("b: ");
+      //   lcd.print(b);
+      // }
+      // if (digitalRead(buttons[0])==1){
+      //   lcd.clear();
+      //   lcd.print("red ");
+      //   lcd.print(swi);
+      //   delay(2000);
+      //   swi = 1;
+      //   lcd.clear();
+      //   lcd.print("red ");
+      //   lcd.print(swi);
+      // } else if (digitalRead(buttons[1])==1){
+      //   lcd.clear();
+      //   lcd.print("blue ");
+      //   lcd.print(swi);
+      //   delay(2000);
+      //   swi = 0;
+      //   lcd.clear();
+      //   lcd.print("blue ");
+      //   lcd.print(swi);
+      // }
+    }
+    while (gameOn == 0){
+      lcd.print("Game over buddy")
     }
   }
 }
