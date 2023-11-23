@@ -28,52 +28,43 @@ void setup()
   }
 
   lcd.begin(16,2);
+  lcd.print("Booting up....");
 }
 
 int gameOn = 0;
-int menuOn = 0;
+int menuOn = 1;
 int roundOn = 0;
 int endMenuOn = 0;
 // menu i need a system that keeps a static screen. updates when theres an input. then moves on to the next function. Within a system that continuously loops itself
+// set screen before while
+// set inputs and outcomes inside while, within (if)
 void loop()
 {
-  while (gameOn == 1){
-    for (int b=0; b<6; b++){
+    lcd.clear();
+    lcd.print("Welcome, choose your gamemode");
+    lcd.setCursor(0,1);
+    lcd.print("hits (20)|seconds(30)");
+    lcd.setCursor(0,1);
+    lcd.cursor();
+  while (menuOn == 1){
+    for (int b=0; b<3; b++){
       if (digitalRead(buttons[0]) == 1){
-        
+        lcd.setCursor(0,1);
+      } else if (digitalRead(buttons[2]) == 1){
+        lcd.setCursor(10,1);
+      } else if (digitalRead(buttons[1]) == 1){
+        menuOn=0;
+        gameOn=1;
+        lcd.clear();
+        lcd.noCursor();
+        lcd.setCursor(0,0);
+        lcd.print("ok");
+        delay(1000);
       }
-      // if (digitalRead(buttons[b]) == 1){
-      //   if(menuOn == 1){
-      //     lcd.clear();
-      //     lcd.print("Play Game?");
-      //   }
-
-      //   lcd.setCursor(0,1);
-      //   lcd.print("b: ");
-      //   lcd.print(b);
-      // }
-      // if (digitalRead(buttons[0])==1){
-      //   lcd.clear();
-      //   lcd.print("red ");
-      //   lcd.print(swi);
-      //   delay(2000);
-      //   swi = 1;
-      //   lcd.clear();
-      //   lcd.print("red ");
-      //   lcd.print(swi);
-      // } else if (digitalRead(buttons[1])==1){
-      //   lcd.clear();
-      //   lcd.print("blue ");
-      //   lcd.print(swi);
-      //   delay(2000);
-      //   swi = 0;
-      //   lcd.clear();
-      //   lcd.print("blue ");
-      //   lcd.print(swi);
-      // }
     }
-    while (gameOn == 0){
-      lcd.print("Game over buddy")
-    }
+  }
+  while (gameOn=1){
+    lcd.clear();
+    lcd.print("here we go");
   }
 }
