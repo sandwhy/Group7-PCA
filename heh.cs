@@ -60,26 +60,39 @@ void pMenu() {
   }
 }
 
-void loop()
-{
+void Game() {
+  while (gameOn = 1){
+    int randNum = random(6);
+    lcd.setCursor(0,0);
+    lcd.clear();
+    lcd.print("Target: ");
+    lcd.print(randNum+1);
+    digitalWrite(leds[randNum], HIGH);
+    long startTime= millis();
+    lcd.setCursor(0,1);
+    roundOn = 1;
+    while (roundOn == 1){
+      if (digitalRead(buttons[randNum]) == 1){
+        long endTime= millis();
+        lcd.setCursor(0,0);
+        lcd.clear();
+        lcd.print("HIT");
+        digitalWrite(leds[randNum],LOW);
+        lcd.setCursor(0,1);
+        lcd.print("Hitsped: ");
+        lcd.print(startTime-endTime);
+        roundOn = 0;
+        delay(3000);
+      }
+    }
+  }
+}
+
+void loop() {
   pMenu();
   lcd.clear();
   lcd.print("mode: ");
   lcd.print(mode);
   delay(2000);
-  while (gameOn==1){
-    int randNum=random(6);
-    long startTime=millis();
-    digitalWrite(leds[1]=1);
-    int hit=0;
-    while(hit==0){
-      for (int b=0; b<3; b++){
-        if (digitalRead(buttons[1] == 1)){
-          lcd.clear();
-          lcd.print(randNum);   
-          lcd.print(" ");
-        }
-      }
-    }
-  }
+  Game();
 }
