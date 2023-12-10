@@ -12,11 +12,12 @@ void loop(){
   Serial.println(digitalRead(button));
   if(digitalRead(button)== LOW){
     digitalWrite(led,HIGH);
+    Serial.println("what");
     Serial.println("1");
   } 
-  if(digitalRead(button)== HIGH) {
+  else if(digitalRead(button)== HIGH) {
     digitalWrite(led,LOW);
+    Serial.println("why");
     Serial.println("0");
   }
-  delay(1000);
 }
