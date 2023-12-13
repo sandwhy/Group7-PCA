@@ -45,11 +45,9 @@ void setup()
 
 int menuOn = 1;
 int gameOn = 0;
-int roundOn = 0;
+int roundLoop = 0;
 int endMenuOn = 0;
-String mode = "hit";
-
-
+String gameMode = "count";
 
 // << STARTING MENU >> //
 void setMenu() {
@@ -89,138 +87,202 @@ void delCountdown() {
 }
 // << MAIN MENU FUNCTION >> //
 void pMenu() {
-  // < set gamemodes > //
-  setMenu();
   while (menuOn == 1){
-    for (int b=0; b<3; b++){
-      if (digitalRead(buttons[0]) == 1){
-        delMenu();
-        setMenu();
-        // has to print out the menu, change one line
-        // <del the option> //
-        disp.stroke(0,0,0);
-        disp.text("- Count", 5,20);
-        // <select the option> //
-        disp.stroke(255,255,255);
-        disp.text("> Count <", 5,20);
+    setMenu();
+    // <sets default count game mode> //
+    disp.stroke(0,0,0);
+    disp.text("- Count", 5,20);
+    // <select the option> //
+    disp.stroke(255,255,255);
+    disp.text("> Count <", 5,20);
+    int menuOptions = 1;
+    while (menuOptions == 1){
+      for (int b=0; b<3; b++){
+        if (digitalRead(buttons[0]) == 0){
+          delMenu();
+          setMenu();
+          // <del the option> //
+          disp.stroke(0,0,0);
+          disp.text("- Count", 5,20);
+          // <select the option> //
+          disp.stroke(255,255,255);
+          disp.text("> Count <", 5,20);
 
-        mode="hit";
-      } else if (digitalRead(buttons[2]) == 1){
-        delMenu();
-        setMenu();
-        disp.stroke(0,0,0);
-        disp.text("- Timed", 5,40);
-        disp.stroke(255,255,255);
-        disp.text("> Timed <", 5,40);
-        
-        mode="sec";
-      } else if (digitalRead(buttons[1]) == 1){
-        delMenu();
-        setCountdown();
-        delCountdown();
-        menuOn=0;
-        gameOn=1;
+          gameMode="count";
+        } else if (digitalRead(buttons[2]) == 0){
+          delMenu();
+          setMenu();
+          disp.stroke(0,0,0);
+          disp.text("- Timed", 5,40);
+          disp.stroke(255,255,255);
+          disp.text("> Timed <", 5,40);
+          
+          gameMode="timed";
+        } else if (digitalRead(buttons[1]) == 0){
+          delMenu();
+          setCountdown();
+          delCountdown();
+          menuOptions=0;
+          menuOn=0;
+          gameOn=1;
 
-        delay(1000);
+          delay(1000);
+        }
       }
+    }
+  }
+  // < set gamemodes > //
+}
+
+
+
+// <updates scores arrray> //
+void Scoring(int position, int target, int time) {
+  // < concactinating strings > //
+  // int a = 1;
+  // int b = 069;
+  // int newNumber = int.Parse(a.ToString() + b.ToString());
+  // Serial.println("Updating Scores Array");
+  // Serial.println("Position");
+  // Serial.println(position);
+  // Serial.println("Target");
+  // Serial.println(target);
+  // Serial.println("Time");
+  // Serial.println(time);
+
+  hits[position] = time;
+}
+void randomdelay() {
+  int ran = random(delaysLen);
+  int randDel = delays[ran];
+  disp.stroke(255,255,255);
+  disp.text("Delay:", 0,0);
+  disp.text(randDel, 0,20);
+  delay(randDel);
+  disp.stroke(0,0,0);
+  disp.text("Delay:", 0,0);
+  disp.text(randDel, 0,20);
+}
+// << MAIN GAME >> //
+void Game() {
+  Serial.println("gameOn");
+  Serial.println(gameOn);
+  Serial.println("endMenuOn");
+  Serial.println(endMenuOn);
+  while(gameOn = 1) {
+    int hitCount = 5;
+    int gameLength = 25000;
+    int gameStartTime = millis();
+    int gameEndTime = gameStartTime + gameLength;
+
+    Serial.println("Game Mode:");
+    Serial.println(gameMode);
+    int position = 0;
+    int gameLoop = 1;
+    while (gameLoop = 1){
+      // <make value to count hits> //
+
+
+      // <choose random button, starts timer> //
+      // int randNum = random(6);
+      long startTime= millis();
+
+      // <light up led display target on display> //
+      int randNum = random(3); // 3 for testing
+      int targetNum = randNum+1;  
+      digitalWrite(leds[randNum],1);
+      disp.stroke(255,255,255);
+      disp.text("Target:", 0,0);
+      disp.text(targetNum, 0,20);
+      roundLoop = 1;
+      
+      // <makes arduino wait for specific button hit> //
+      while (roundLoop == 1){
+        if (digitalRead(buttons[randNum])==0){
+          long endTime= millis();
+
+          digitalWrite(leds[randNum],0);
+
+          int scoreTime = startTime-endTime;
+          position++;
+          Serial.println("Position:");
+          Serial.println(position);
+          Scoring(position, randNum, scoreTime);
+          // roundOn = 0;
+          disp.stroke(0,0,0);
+          disp.text("Target:", 0,0);
+          disp.text(targetNum, 0,20);
+          randomdelay();
+          // delay(1000);
+          roundLoop=0;
+        }    
+        if (gameMode=="count"){
+ 
+          if (position >= hitCount){
+                     Serial.println("checking things");
+          Serial.println(position);
+          Serial.println(hitCount);
+            Serial.println("Game end by count");
+            for (int a = 0; a<position; a++){
+              Serial.println("Count: ");
+              Serial.println(a);
+              Serial.println("Time:");
+              Serial.println(hits[a]);
+            }
+            gameOn = 0;
+            gameLoop = 0;
+            endMenuOn = 1;
+          }
+        }
+        // <ends game if current time is equal to or more than gameEndTime> //
+        if (gameMode=="timed"){
+          int now = millis();
+          if (now >= gameEndTime){
+            gameOn = 0;
+            gameLoop = 0;
+            endMenuOn = 1;
+          }
+        }
+      }
+          // <ends game if count game mode was selected> //
+
     }
   }
 }
 
 
 
-// <updates scores arrray> //
-void Scoring(int pos, int target, int time) {
-  // < concactinating strings > //
-  // int a = 1;
-  // int b = 069;
-  // int newNumber = int.Parse(a.ToString() + b.ToString());
+// << END MENU >> //
+void EndMenu () {
+  while (endMenuOn==1){
+    Serial.println("Game end turn on");
+    // >>make led end animation //
+    // >>print out game end formalities //
+    disp.stroke(255,255,255);
+    disp.setTextSize(2);
+    disp.text("GAME END", 0,0);
+    disp.setTextSize(1);
 
-  hits[pos] = time;
+    // >>print out average game score //
+    int sCount = 0;
+    int sTotal = 0;
+    int sAverage = 0;
+    for (int i = 0; i < 60 ; i++){
+      if (hits[i] != 0){
+        sCount = sCount++;
+      }
+      sTotal += hits[i];
+    }
+    sAverage = sTotal/sCount;
+    disp.text("Score:", 0,20);
+    disp.setTextSize(3);
+    Serial.println("sAverage");
+    Serial.println(sAverage);
+    // disp.text(sAverage);
+    // >>ask if wanna play again //
+
+  }
 }
-void randomdelay() {
-  int ran = random(delaysLen);
-  int randDel = delays[ran];
-
-  delay(randDel);
-}
-// << MAIN GAME >> //
-// void Game() {
-//   if (mode == "hit"){
-//     int hitCount = 10;
-//   } else if (mode == "sec"){
-//     int gameLength = 25000;
-//     int gameStartTime = millis();
-//     int gameEndTime = gameStartTime + gameLength;
-//   } 
-
-//   while (gameOn = 1){
-//     // int position = 0;
-//     // if (mode == "hit"){
-//     //   if (position == hitCount){
-//     //     gameOn = 0;
-//     //     endMenuOn = 1;
-//     //   }
-//     // } else if (mode == "sec"){
-//     //   int now = millis();
-//     //   if (now >= gameEndTime){
-//     //     gameOn = 0;
-//     //     endMenuOn = 1;
-//     //   }
-//     // } 
-
-//     int randNum = random(6);
-//     int targetNum = randNum+1;  
-//     long startTime= millis();
-//     // <light up led> //
-//     digitalWrite(leds[randNum],1);
-    
-//     roundOn = 1;
-//     while (roundOn == 1){
-//       if (digitalRead(buttons[randNum])==LOW){
-//         long endTime= millis();
-
-//         digitalWrite(leds[randNum],0);
-
-//         int scoreTime = startTime-endTime;
-//         // int pos = position+1
-//         Scoring(pos, randNum, scoreTime);
-//         roundOn = 0;
-//         randomdelay();
-//       }    
-//     }
-//   }
-// }
-
-
-// // << END MENU >> //
-// void EndMenu () {
-//   while (endMenuOn==1){
-//     // >>make led end animation //
-//     // >>print out game end formalities //
-//     disp.stroke(255,255,255);
-//     disp.setTextSize(2);
-//     disp.text("GAME END", 0,0);
-//     disp.setTextSize(1);
-
-//     // >>print out average game score //
-//     int sCount = 0;
-//     int sTotal = 0;
-//     int sAverage = 0;
-//     for (int i = 0; i < 60 ; i++){
-//       if (hits[i] != 0){
-//         sCount = sCount++;
-//       }
-//       sTotal += hits[i];
-//     }
-//     sAverage = sTotal/sCount;
-//     disp.text("Score:", 0,20);
-//     disp.setTextSize(3);
-//     disp.text(sAverage)
-//     // >>ask if wanna play again //
-
-//   }
-// }
 
 
 
@@ -244,7 +306,7 @@ void button_test() {
   //     Serial.println("Button pressed: ");
   //     Serial.println(1);
   //   }
-  delay(1000);
+  delay(100);
 }
 void led_test() {
   for (int a=0;a<3;a++){
@@ -259,13 +321,14 @@ void led_test() {
 
 void loop() {
   // led_test();
-  button_test();
+  // button_test();
   // <delete booting up text> //
-  // disp.setTextSize(3);
-  // disp.stroke(0,0,0);
-  // disp.text("Booting up....", 0,0);
+  disp.setTextSize(3);
+  disp.stroke(0,0,0);
+  disp.text("Booting up....", 0,0);
   // pMenu();
-  // Game();
-  // EndMenu();
+  Game();
+  EndMenu();
 }
 
+ 
