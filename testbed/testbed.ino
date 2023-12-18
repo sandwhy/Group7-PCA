@@ -3,8 +3,8 @@ int button2 = 4;
 int led1 = 5;
 int led2 = 6;
 
-int buttons[] = {30,31,32,33,34,35};
-int leds[] =    {36,37,38,39,40,41};
+// int buttons[] = {30,31,32,33,34,35};
+// int leds[] =    {36,37,38,39,40,41};
 
 void setup() {
   pinMode(button1, INPUT);
@@ -40,13 +40,14 @@ void loop() {
   //     digitalWrite(leds[a],LOW);
   //   }
   // }
-  // Serial.println("Button 1: ");
+  Serial.println("Button 1: ");
+  Serial.println(digitalRead(button1));
   // Serial.println(digitalRead(buttons[0]));
-  // Serial.println("Button 2: ");
-  // Serial.println(digitalRead(buttons[1]));
-  // Serial.println("Button 3: ");
-  // Serial.println(digitalRead(buttons[2]));
-  // delay(500);
+  Serial.println("Button 2: ");
+  Serial.println(digitalRead(buttons[1]));
+  Serial.println("Button 3: ");
+  Serial.println(digitalRead(buttons[2]));
+  delay(500);
 
   // for (int a=0;a<3;a++){
   //   Serial.println(a+100);

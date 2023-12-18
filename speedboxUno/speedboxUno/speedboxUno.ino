@@ -14,10 +14,15 @@ int rst = 8;
 
 TFT disp = TFT(cs,dc,rst);
 
-int buttons[] = {30,31,32,33,34,35};
-int leds[] =    {36,37,38,39,40,41};
+// < Mega > //
+// int buttons[] = {30,31,32,33,34,35};
+// int leds[]    = {36,37,38,39,40,41};
+// < Uno > //
+int buttons[]       = {3,4,5};
+int leds[]       = {6,7,12};
+
 int buzzers[] = {42,43,44,45,46,47};
-int delays[] = {100,200,500,1000,2000,3000};
+int delays[] = {1000,1000,2000,2000,2000,2000,3000};
 int delaysLen = sizeof(delays)/sizeof(delays[0]);
 int hits[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 // int hits[] = {12,12,0,12,100,0,12,13,0};
@@ -267,18 +272,6 @@ void pMenu() {
 
 // <updates scores arrray> //
 void Scoring(int position, int target, int time) {
-  // < concactinating strings > //
-  // int a = 1;
-  // int b = 069;
-  // int newNumber = int.Parse(a.ToString() + b.ToString());
-  // Serial.println("Updating Scores Array");
-  // Serial.println("Position");
-  // Serial.println(position);
-  // Serial.println("Target");
-  // Serial.println(target);
-  // Serial.println("Time");
-  // Serial.println(time);
-
   hits[position] = time;
 }
 void randomdelay() {

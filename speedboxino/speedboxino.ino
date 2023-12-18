@@ -401,7 +401,7 @@ void EndMenu() {
         if (digitalRead(buttons[i]) == 0){
           Serial.println("next");
           menuOn = 1;
-            enuOptions1 = 0;
+            menuOptions1 = 0;
             menuOptions2 = 0;
             gameMode = "count";
             countsVal = 15;
@@ -452,7 +452,7 @@ void led_test() {
 
 
 void loop() {
-  // led_test();
+  led_test();
   // button_test();
 
   disp.setTextSize(3);
