@@ -264,7 +264,7 @@ void pMenu() {
               delCountdown();
               resetLed();
 
-          } else if (digitalRead(buttons[1]) == 1) {
+          } else if (digitalRead(buttons[1])==1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
@@ -292,7 +292,7 @@ void pMenu() {
         }
       } else if (gameMode == "timed"){  
         for (int i=0; i < 6; i++){
-          if (digitalRead(buttons[5]==1)) {
+          if (digitalRead(buttons[5])==1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
@@ -301,10 +301,12 @@ void pMenu() {
             disp.stroke(255,255,255);
             disp.text("{20s}(40s)(1min)(1.5min)", 0,20);
 
+            Serial.println("over here");
             Serial.println("- 20s");
 
             timedVal = 20000;
-          } else if (digitalRead(buttons[4])) {
+          } else if (digitalRead(buttons[4])==1) {
+            // if (digitalRead(buttons[4]==1)){
             delThings();
             setThings();
             disp.stroke(0,0,0);
@@ -316,7 +318,7 @@ void pMenu() {
             Serial.println("- 40s");
 
             timedVal = 40000;
-          } else if (digitalRead(buttons[0])) {
+          } else if (digitalRead(buttons[0])==1) {
           // < confirm buttion > //
             menuOptions1=0;
             menuOptions2=0;
@@ -329,7 +331,7 @@ void pMenu() {
             resetLed();
 
 
-          } else if (digitalRead(buttons[1])) {
+          } else if (digitalRead(buttons[1])==1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
@@ -341,7 +343,7 @@ void pMenu() {
             Serial.println("- 1min");
 
             timedVal = 60000;
-          } else if (digitalRead(buttons[2])) {
+          } else if (digitalRead(buttons[2])==1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);

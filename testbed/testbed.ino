@@ -73,6 +73,6 @@ void led_test() {
   }
 }
 void loop(){
-  // button_test();
+  button_test();
   // led_test();
 }
