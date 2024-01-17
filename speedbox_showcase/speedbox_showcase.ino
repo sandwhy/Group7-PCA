@@ -15,8 +15,8 @@ TFT disp = TFT(cs,dc,rst);
 
 int buttons[] = {30,31,32,33,34,35};
 int leds[] =    {36,37,38,39,40,41};
-int buzzers[] = {42,43,44,45,46,47};
-int delays[] = {200,1000,1000,1000,2000,2000,3000};
+// int buzzers[] = {42,43,44,45,46,47};
+int delays[] = {200,1000,1500,2000,2500,1000,1500,2000,2500,3000};
 int delaysLen = sizeof(delays)/sizeof(delays[0]);
 int hits[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 // int hits[] = {12,12,0,12,100,0,12,13,0};
@@ -25,7 +25,6 @@ int hitsLen = sizeof(hits)/sizeof(hits[0]);
 char cstr[16];
 // <HOW TO TEXT INT> //
 // itoa(//int here//, cstr, 10) //
-
 
 
 void setup()
@@ -79,9 +78,11 @@ void setThings () {
   disp.setTextSize(2);
   if (gameMode == "count") {
     disp.text("Set number of targets: ", 0,0);
+    disp.setTextSize(1);
     disp.text("(10)(15)(20)(25)", 0,20);
   } else if (gameMode == "timed") {
     disp.text("Set Time: ", 0,0);
+    disp.setTextSize(1);
     disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
   }
 }
@@ -100,16 +101,19 @@ void delThings () {
   disp.setTextSize(2);
   if (gameMode == "count") {
     disp.text("Set number of targets: ", 0,0);
+    disp.setTextSize(1);
     disp.text("(10)(15)(20)(25)", 0,20);
     disp.text("{10}{15}{20}{25}", 0,20);
   } else if (gameMode == "timed") {
     disp.text("Set Time: ", 0,0);
+    disp.setTextSize(1);
     disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
     disp.text("{20s}{40s}{1min}{1.5min}", 0,20);
   }
 }
 void setCountdown() {
   disp.stroke(255,255,255);
+  disp.setTextSize(2);
   disp.text("Starting in:", 0,0);
   //
   Serial.println("Starting in: ");
@@ -128,6 +132,7 @@ void setCountdown() {
 }
 void delCountdown() {
   disp.stroke(0,0,0);
+  disp.setTextSize(2);
   disp.text("Starting in:", 0,0);
   disp.text("3", 0,20);
   disp.text("2", 0,40);
@@ -209,84 +214,77 @@ void pMenu() {
        
     while (menuOptions2 == 1){
       // <setup led for navigation> //
-        digitalWrite(leds[0],LOW);
-        digitalWrite(leds[1],LOW);
-        digitalWrite(leds[3],LOW);
+        digitalWrite(leds[5],LOW);
         digitalWrite(leds[4],LOW);
+        digitalWrite(leds[1],LOW);
+        digitalWrite(leds[2],LOW);
       // Serial.println(gameMode);
 
       if (gameMode == "count"){
         for (int i=0; i < 6; i++){
-          // Serial.println(digitalRead(buttons[0]));
-          // Serial.println(digitalRead(buttons[1]));
-          // Serial.println(digitalRead(buttons[2]));
-          if (digitalRead(buttons[0]) == 1) {
+          if (digitalRead(buttons[5]) == 1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(10)(15)(20)(25)", 0,20);
             disp.stroke(255,255,255);
             disp.text("{10}(15)(20)(25)", 0,20);
 
-            // println
             Serial.println("- 10");
 
             countsVal = 10;
-          // } else if (digitalRead(buttons[2])) {
-          } else if (digitalRead(buttons[1]) == 1) {
+          } else if (digitalRead(buttons[4]) == 1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(10)(15)(20)(25)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(10){15}(20)(25)", 0,20);
 
-            // println
             Serial.println("- 15");
 
             countsVal = 15;
-          // } else if (digitalRead(buttons[1])) {
-          } else if (digitalRead(buttons[2]) == 1) {
+          } else if (digitalRead(buttons[0]) == 1) {
           // < confirm buttion > //
               menuOptions1=0;
               menuOptions2=0;
               menuOn=0;
               gameOn=1;
 
-            Serial.println("heading over to here");
-            Serial.println(menuOptions1);
-            Serial.println(menuOptions2);
-            Serial.println(menuOn);
-            Serial.println(gameOn);
+              Serial.println("heading over to here");
+              Serial.println(menuOptions1);
+              Serial.println(menuOptions2);
+              Serial.println(menuOn);
+              Serial.println(gameOn);
 
               delThings();
               setCountdown();
               delCountdown();
               resetLed();
 
-          // } else if (digitalRead(buttons[3])) {
-          } else if (digitalRead(buttons[3]) == 1) {
+          } else if (digitalRead(buttons[1]) == 1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(10)(15)(20)(25)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(10)(15){20}(25)", 0,20);
 
-            // println
             Serial.println("- 20");
 
             countsVal = 20;
-          // } else if (digitalRead(buttons[5])) {
-          } else if (digitalRead(buttons[4]) == 1) {
+          } else if (digitalRead(buttons[2]) == 1) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(10)(15)(20)(25)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(10){15}(20){25}", 0,20);
 
-            // println
             Serial.println("- 25");
 
             countsVal = 25;
@@ -294,23 +292,23 @@ void pMenu() {
         }
       } else if (gameMode == "timed"){  
         for (int i=0; i < 6; i++){
-          if (digitalRead(buttons[0])) {
+          if (digitalRead(buttons[5]==1)) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
             disp.stroke(255,255,255);
             disp.text("{20s}(40s)(1min)(1.5min)", 0,20);
 
-            // println
             Serial.println("- 20s");
 
             timedVal = 20000;
-          // } else if (digitalRead(buttons[2])) {
-          } else if (digitalRead(buttons[1])) {
+          } else if (digitalRead(buttons[4])) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(20s){40s}(1min)(1.5min)", 0,20);
@@ -318,8 +316,7 @@ void pMenu() {
             Serial.println("- 40s");
 
             timedVal = 40000;
-          // } else if (digitalRead(buttons[1])) {
-          } else if (digitalRead(buttons[2])) {
+          } else if (digitalRead(buttons[0])) {
           // < confirm buttion > //
             menuOptions1=0;
             menuOptions2=0;
@@ -332,11 +329,11 @@ void pMenu() {
             resetLed();
 
 
-          // } else if (digitalRead(buttons[3])) {
-          } else if (digitalRead(buttons[3])) {
+          } else if (digitalRead(buttons[1])) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(20s)(40s){1min}(1.5min)", 0,20);
@@ -344,11 +341,11 @@ void pMenu() {
             Serial.println("- 1min");
 
             timedVal = 60000;
-          // } else if (digitalRead(buttons[5])) {
-          } else if (digitalRead(buttons[4])) {
+          } else if (digitalRead(buttons[2])) {
             delThings();
             setThings();
             disp.stroke(0,0,0);
+            disp.setTextSize(1);
             disp.text("(20s)(40s)(1min)(1.5min)", 0,20);
             disp.stroke(255,255,255);
             disp.text("(20s)(40s)(1min){1.5min}", 0,20);
@@ -427,6 +424,7 @@ void Game() {
       // <light up led display target on display> //
       digitalWrite(leds[randNum],LOW);
       disp.stroke(255,255,255);
+      disp.setTextSize(2);
       disp.text("Target:", 0,0);
       disp.text(itoa(targetNum, cstr, 10), 0,20);
       // println
